@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkillMap — OJT Internship Readiness &amp; E-Portfolio</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="brand-icon">SM</span>
+        <div>
+          <h1>SkillMap</h1>
+          <p class="subtitle">OJT Internship Skill Matcher &amp; Student E-Portfolio</p>
+        </div>
+      </div>
+      <div class="header-meta">
+        <span id="student-institute-pill" class="meta-pill">Institute / Dept: Not Set</span>
+        <div class="meta-pill">
+          Skills Added: <strong id="skill-count-stat">0</strong>
+        </div>
+      </div>
+    </div>
+
+    <nav class="main-nav container" aria-label="Primary Navigation">
+      <div class="nav-dropdown" id="nav-dropdown">
+        <button
+          type="button"
+          class="nav-dropdown-toggle"
+          id="nav-dropdown-btn"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span id="nav-current-label">1. Skills &amp; Target OJT Roles</span>
+          <span class="dropdown-arrow">&#9662;</span>
+        </button>
+
+        <div class="nav-dropdown-menu hidden" id="nav-dropdown-menu" role="menu">
+          <button type="button" class="nav-dropdown-item active" data-tab="explorer" role="menuitem">
+            <span>1. Skills &amp; Target OJT Roles</span>
+          </button>
+          <button type="button" class="nav-dropdown-item" data-tab="compatibility" role="menuitem">
+            <span>2. Compatibility &amp; Gap Analyzer</span>
+            <span id="nav-match-badge" class="badge badge-primary">0 High Match</span>
+          </button>
+          <button type="button" class="nav-dropdown-item" data-tab="portfolio" role="menuitem">
+            <span>3. E-Portfolio &amp; Export</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container main-content">
+    <!-- =========================================================
+         EPIC 1: STUDENT SKILL PROFILE & USER-INPUT OJT TARGETS
+         ========================================================= -->
+    <section id="tab-explorer" class="tab-panel active">
+      <div class="grid-two-col">
+        <!-- Left: Skill Profile Builder -->
+        <div class="card">
+          <h2>Skill &amp; Competency Profile</h2>
+          <p class="muted">Enter your institute/department, specialization field, and current skills.</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="student-institute">Institute / College / Department</label>
+              <input type="text" id="student-institute" placeholder="e.g., Computer Studies, Business, Engineering" />
+            </div>
+
+            <div class="form-group">
+              <label for="academic-track">Specialization / Major</label>
+              <input type="text" id="academic-track" placeholder="e.g., Web Dev, Marketing, Civil Eng, HRM" />
+            </div>
+          </div>
+
+          <hr class="divider" />
+
+          <form id="skill-form" novalidate>
+            <div class="form-group">
+              <label for="skill-name">Skill / Tool / Competency Name <span class="req">*</span></label>
+              <input type="text" id="skill-name" placeholder="e.g., Data Analysis, AutoCAD, Accounting, JavaScript, Communication" />
+              <small class="error-msg" id="err-skill-name"></small>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="skill-level">Proficiency Level <span class="req">*</span></label>
+                <select id="skill-level">
+                  <option value="">-- Select Level --</option>
+                  <option value="Beginner">Beginner</option>
+                  <option value="Intermediate">Intermediate</option>
+                  <option value="Advanced">Advanced</option>
+                </select>
+                <small class="error-msg" id="err-skill-level"></small>
+              </div>
+
+              <div class="form-group">
+                <label for="skill-category">Category</label>
+                <select id="skill-category">
+                  <option value="Technical / Hard Skill">Technical / Hard Skill</option>
+                  <option value="Software & Tools">Software &amp; Tools</option>
+                  <option value="Administrative & Operations">Administrative &amp; Operations</option>
+                  <option value="Research & Analysis">Research &amp; Analysis</option>
+                  <option value="Communication & Leadership">Communication &amp; Leadership</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">+ Add Skill / Competency</button>
+          </form>
+
+          <div class="skill-bank-wrapper">
+            <div class="skill-bank-header">
+              <h3>Your Skill Bank</h3>
+              <span class="muted">Click &times; to remove</span>
+            </div>
+            <div id="user-skills-list" class="skill-tags-container"></div>
+          </div>
+        </div>
+
+        <!-- Right: Student-Entered Target OJT Roles -->
+        <div>
+          <div class="card mb-16">
+            <div class="explorer-toolbar">
+              <div>
+                <h2>My Target OJT Roles</h2>
+                <p class="muted">Input the OJT positions and required qualifications you plan to apply for.</p>
+              </div>
+              <button type="button" id="btn-toggle-role-form" class="btn btn-primary">+ Input Target OJT Role</button>
+            </div>
+
+            <!-- Collapsible Student Input Form for Target OJT Role -->
+            <form id="target-role-form" class="role-input-drawer hidden" novalidate>
+              <hr class="divider" />
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="role-title">Target OJT Role Title <span class="req">*</span></label>
+                  <input type="text" id="role-title" placeholder="e.g., OJT Trainee, Junior Analyst, Field Intern" />
+                  <small class="error-msg" id="err-role-title"></small>
+                </div>
+                <div class="form-group">
+                  <label for="role-company">Host Training Establishment (Company / Agency) <span class="req">*</span></label>
+                  <input type="text" id="role-company" placeholder="e.g., Company, Hospital, Bank, or Government Office" />
+                  <small class="error-msg" id="err-role-company"></small>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="role-modality">Work Setup</label>
+                  <select id="role-modality">
+                    <option value="On-site">On-site</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Fieldwork">Fieldwork</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="role-hours">Required OJT Hours</label>
+                  <input type="number" id="role-hours" placeholder="e.g., 486" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="role-skills">Required Skills / Qualifications (comma-separated) <span class="req">*</span></label>
+                <input type="text" id="role-skills" placeholder="e.g., MS Excel, Report Writing, Project Management, SQL" />
+                <small class="error-msg" id="err-role-skills"></small>
+              </div>
+
+              <div class="form-actions mt-12">
+                <button type="submit" class="btn btn-primary">Save Target Role</button>
+                <button type="button" id="btn-cancel-role-form" class="btn btn-secondary">Cancel</button>
+              </div>
+            </form>
+          </div>
+
+          <div id="internship-list" class="internship-cards"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         EPIC 2: SKILL COMPATIBILITY & GAP ANALYZER
+         ========================================================= -->
+    <section id="tab-compatibility" class="tab-panel">
+      <div class="grid-two-col">
+        <!-- Left: Role-by-Role Gap Breakdown -->
+        <div class="card">
+          <h2>Role Compatibility Breakdown</h2>
+          <p class="muted">Select one of your target OJT roles to inspect matched and missing qualifications.</p>
+
+          <div class="form-group">
+            <label for="analyzer-role-select">Your Target OJT Position</label>
+            <select id="analyzer-role-select"></select>
+          </div>
+
+          <div id="role-gap-breakdown" class="mt-16"></div>
+        </div>
+
+        <!-- Right: What-If Skill Simulator -->
+        <div class="card">
+          <h2>"What-If" Upskilling Simulator</h2>
+          <p class="muted">Test how acquiring a new skill, certification, or tool impacts your target OJT roles before updating your profile.</p>
+
+          <form id="simulator-form" class="search-bar">
+            <input
+              type="text"
+              id="simulator-skill-input"
+              placeholder="Enter a prospective skill or tool to test..."
+            />
+            <button type="submit" class="btn btn-primary">Simulate</button>
+          </form>
+
+          <div id="simulator-results" class="mt-16"></div>
+
+          <div class="info-note">
+            <strong>OJT Readiness Reminder:</strong> Alongside domain-specific skills, host organizations evaluate professionalism, punctuality, adaptability, documentation habits, and teamwork during OJT screening.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         EPIC 3: E-PORTFOLIO ORGANIZER & EXPORT
+         ========================================================= -->
+    <section id="tab-portfolio" class="tab-panel">
+      <!-- Student Academic Profile & Export Bar -->
+      <div class="card mb-20">
+        <div class="section-top-bar">
+          <div>
+            <h2>Student OJT Profile &amp; Readiness Export</h2>
+            <p class="muted">Maintain your academic details and export a clean summary for your OJT coordinator or host company.</p>
+          </div>
+          <div class="export-controls">
+            <button type="button" id="btn-export-csv" class="btn btn-secondary">Download CSV</button>
+            <button type="button" id="btn-export-print" class="btn btn-primary">Export / Print Portfolio</button>
+          </div>
+        </div>
+
+        <form id="student-profile-form" class="grid-three-col mt-12">
+          <div class="form-group">
+            <label for="stud-name">Full Name</label>
+            <input type="text" id="stud-name" placeholder="e.g., Juan Dela Cruz" />
+          </div>
+          <div class="form-group">
+            <label for="stud-program">Degree Program / Year &amp; Section</label>
+            <input type="text" id="stud-program" placeholder="e.g., BSBA / BSCS / BSCE — 4A" />
+          </div>
+          <div class="form-group">
+            <label for="stud-hours">Required OJT Hours</label>
+            <input type="number" id="stud-hours" placeholder="e.g., 486" />
+          </div>
+          <div class="form-group">
+            <label for="stud-portfolio-link">Online Portfolio / Repository URL</label>
+            <input type="url" id="stud-portfolio-link" placeholder="https://github.com/username or Google Drive/Behance" />
+          </div>
+          <div class="form-group">
+            <label for="stud-linkedin">LinkedIn / Professional Profile URL</label>
+            <input type="url" id="stud-linkedin" placeholder="https://linkedin.com/in/username" />
+          </div>
+          <div class="form-group">
+            <label for="stud-objective">Career / OJT Objective</label>
+            <input type="text" id="stud-objective" placeholder="Seeking an OJT placement in..." />
+          </div>
+          <div class="profile-save-row">
+            <button type="submit" class="btn btn-secondary btn-sm">Save Student Details</button>
+            <span id="student-save-status" class="status-text"></span>
+          </div>
+        </form>
+      </div>
+
+      <div class="grid-two-col">
+        <!-- Left: Add / Edit Portfolio Entry -->
+        <div class="card">
+          <h2 id="portfolio-form-title">Add Output, Project, or Certification</h2>
+          <form id="portfolio-form" novalidate>
+            <input type="hidden" id="proj-edit-id" value="" />
+
+            <div class="form-group">
+              <label for="proj-title">Output / Project / Certification Title <span class="req">*</span></label>
+              <input type="text" id="proj-title" placeholder="e.g., Thesis / Capstone, Feasibility Study, National Certificate" />
+              <small class="error-msg" id="err-proj-title"></small>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="proj-category">Category</label>
+                <select id="proj-category">
+                  <option value="Thesis / Capstone">Thesis / Capstone</option>
+                  <option value="Academic / Field Project">Academic / Field Project</option>
+                  <option value="System / Design / Case Study">System / Design / Case Study</option>
+                  <option value="Certification / Seminar">Certification / Seminar</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="proj-role">Your Role</label>
+                <input type="text" id="proj-role" placeholder="e.g., Team Leader, Researcher, Developer" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="proj-stack">Skills / Tools Applied <span class="req">*</span></label>
+              <input type="text" id="proj-stack" placeholder="e.g., Excel, Financial Modeling, Python, AutoCAD, Canva" />
+              <small class="error-msg" id="err-proj-stack"></small>
+            </div>
+
+            <div class="form-group">
+              <label for="proj-url">Document / Repository / Credential URL</label>
+              <input type="url" id="proj-url" placeholder="https://..." />
+            </div>
+
+            <div class="form-group">
+              <label for="proj-desc">Description &amp; Key Outcomes</label>
+              <textarea id="proj-desc" rows="3" placeholder="Summarize the work, objectives, and your key contributions..."></textarea>
+            </div>
+
+            <label class="checkbox-label mt-12">
+              <input type="checkbox" id="proj-featured" />
+              Feature at top of E-Portfolio
+            </label>
+
+            <div class="form-actions mt-12">
+              <button type="submit" id="btn-save-proj" class="btn btn-primary">Save to E-Portfolio</button>
+              <button type="button" id="btn-cancel-proj" class="btn btn-secondary hidden">Cancel Edit</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right: Portfolio Feed -->
+        <div class="card">
+          <div class="feed-header">
+            <h2>E-Portfolio Showcase</h2>
+            <div class="filter-controls">
+              <select id="filter-proj-cat" aria-label="Filter by Category">
+                <option value="ALL">All Categories</option>
+                <option value="Thesis / Capstone">Thesis / Capstone</option>
+                <option value="Academic / Field Project">Academic / Field Project</option>
+                <option value="System / Design / Case Study">System / Design / Case Study</option>
+                <option value="Certification / Seminar">Certification / Seminar</option>
+              </select>
+              <input type="text" id="filter-proj-tech" placeholder="Filter by skill/tool..." aria-label="Filter by Skill or Tool" />
+            </div>
+          </div>
+
+          <div id="portfolio-feed" class="portfolio-list"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Printable Summary Modal -->
+  <div id="print-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <div class="modal-actions no-print">
+        <button type="button" id="btn-trigger-print" class="btn btn-primary">Print / Save as PDF</button>
+        <button type="button" id="btn-close-modal" class="btn btn-secondary">Close</button>
+      </div>
+      <div id="printable-report-area"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
